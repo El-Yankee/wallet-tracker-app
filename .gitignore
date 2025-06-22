@@ -35,3 +35,13 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# Android build folders
+android/.gradle/
+android/app/build/
+android/build/
+
+# iOS build folders (por si en el futuro generas ios/)
+ios/build/
+ios/Pods/
+ios/Podfile.lock
