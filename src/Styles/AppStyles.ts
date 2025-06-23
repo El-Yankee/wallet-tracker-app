@@ -222,6 +222,8 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 6,
+    flexDirection: "row",
+    alignItems: "center",
   },
   actionButtonText: {
     color: "#fff",
@@ -249,6 +251,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderTopWidth: 1,
     borderTopColor: "#e5e7eb",
+    height: 80,
   },
   navItem: {
     flex: 1,

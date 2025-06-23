@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { SafeAreaView, StatusBar } from "react-native";
+import { StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { AppHeader } from "./src/Components/AppHeader";
 import { TotalsScreen } from "./src/Screens/TotalsScreen";
 import { WalletsScreen } from "./src/Screens/WalletsScreen";
@@ -54,21 +55,24 @@ const AppContent: React.FC = () => {
   }, []);
 
   return (
-    <SafeAreaView
-      style={[
-        currentStyles.safeArea,
-        { backgroundColor: currentStyles.background.backgroundColor },
-      ]}
-    >
-      <StatusBar
-        barStyle={isDarkMode ? "light-content" : "dark-content"}
-        backgroundColor={currentStyles.background.backgroundColor}
-      />
-      <AppHeader />
-      <NavigationContainer>
-        <MainTabs />
-      </NavigationContainer>
-    </SafeAreaView>
+    <SafeAreaProvider>
+      <SafeAreaView
+        style={[
+          currentStyles.safeArea,
+          { backgroundColor: currentStyles.background.backgroundColor },
+        ]}
+        edges={["top", "bottom"]}
+      >
+        <StatusBar
+          barStyle={isDarkMode ? "light-content" : "dark-content"}
+          backgroundColor={currentStyles.background.backgroundColor}
+        />
+        <AppHeader />
+        <NavigationContainer>
+          <MainTabs />
+        </NavigationContainer>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 };
 
