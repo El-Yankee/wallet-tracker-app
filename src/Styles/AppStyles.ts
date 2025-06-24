@@ -252,11 +252,12 @@ export const styles = StyleSheet.create({
   bottomNav: {
     flexDirection: "row",
     backgroundColor: "#fff",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
     borderTopWidth: 1,
     borderTopColor: "#e5e7eb",
     height: 80,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-around",
   },
   navItem: {
     flex: 1,
@@ -268,7 +269,7 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
   },
   navText: {
-    fontSize: 12,
+    fontSize: 10,
     color: "#6b7280",
     marginTop: 4,
   },

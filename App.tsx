@@ -12,9 +12,10 @@ import { TransactionsScreen } from "./src/Screens/TransactionsScreen";
 import { NotesScreen } from "./src/Screens/NotesScreen";
 import { AppProvider, useAppContext } from "./src/Context/AppContext";
 import { styles, darkStyles } from "./src/Styles/AppStyles";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
 const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
+const Tab = createMaterialTopTabNavigator();
 
 const MainTabs: React.FC = () => {
   const { isDarkMode } = useAppContext();
@@ -22,20 +23,24 @@ const MainTabs: React.FC = () => {
 
   return (
     <Tab.Navigator
+      tabBarPosition="bottom"
       screenOptions={({ route }) => ({
-        headerShown: false,
+        swipeEnabled: true,
+        tabBarShowIcon: true,
         tabBarStyle: currentStyles.bottomNav,
-        tabBarIcon: ({ color, size }) => {
-          let iconName: string = "home-outline";
+        tabBarIndicatorStyle: { backgroundColor: "#3b82f6" },
+        tabBarIcon: ({ color }) => {
+          let iconName = "home-outline";
           if (route.name === "Totals") iconName = "home-outline";
           if (route.name === "Wallets") iconName = "wallet-outline";
           if (route.name === "Transactions") iconName = "receipt-outline";
           if (route.name === "Notes") iconName = "document-text-outline";
-          return <Ionicons name={iconName as any} size={size} color={color} />;
+          return <Ionicons name={iconName as any} size={24} color={color} />;
         },
         tabBarActiveTintColor: "#3b82f6",
         tabBarInactiveTintColor: currentStyles.iconColor.color,
         tabBarLabelStyle: currentStyles.navText,
+        tabBarShowLabel: true,
       })}
     >
       <Tab.Screen name="Totals" component={TotalsScreen} />
