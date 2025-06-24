@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { Dimensions } from "react-native";
 
 export const styles = StyleSheet.create({
   safeArea: {
@@ -254,10 +255,10 @@ export const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderTopWidth: 1,
     borderTopColor: "#e5e7eb",
-    height: 80,
     display: "flex",
     alignItems: "center",
     justifyContent: "space-around",
+    height: Dimensions.get("window").height * 0.1,
   },
   navItem: {
     flex: 1,
