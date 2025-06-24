@@ -19,6 +19,9 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   appTitle: {
     fontSize: 20,
@@ -53,6 +56,8 @@ export const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 8,
     backgroundColor: "#f3f4f6",
+    right: 10,
+    position: "absolute",
   },
   addButton: {
     backgroundColor: "#3b82f6",
