@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { Dimensions } from "react-native";
 
 export const styles = StyleSheet.create({
   safeArea: {
@@ -19,6 +20,9 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   appTitle: {
     fontSize: 20,
@@ -53,6 +57,8 @@ export const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 8,
     backgroundColor: "#f3f4f6",
+    right: 10,
+    position: "absolute",
   },
   addButton: {
     backgroundColor: "#3b82f6",
@@ -222,6 +228,8 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 6,
+    flexDirection: "row",
+    alignItems: "center",
   },
   actionButtonText: {
     color: "#fff",
@@ -245,10 +253,12 @@ export const styles = StyleSheet.create({
   bottomNav: {
     flexDirection: "row",
     backgroundColor: "#fff",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
     borderTopWidth: 1,
     borderTopColor: "#e5e7eb",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-around",
+    height: Dimensions.get("window").height * 0.1,
   },
   navItem: {
     flex: 1,
@@ -260,7 +270,7 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
   },
   navText: {
-    fontSize: 12,
+    fontSize: 10,
     color: "#6b7280",
     marginTop: 4,
   },

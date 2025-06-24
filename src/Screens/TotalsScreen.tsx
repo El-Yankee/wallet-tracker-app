@@ -5,7 +5,6 @@ import { useState } from "react";
 import { ScrollView, View, Text, TouchableOpacity, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppContext } from "../Context/AppContext";
-import { DarkModeToggle } from "../Components/DarkModeToggle";
 import { TotalModal } from "../Components/Modals/TotalModal";
 import type { Total } from "../Types";
 import { formatCurrency } from "../Utils/helpers";
@@ -46,7 +45,6 @@ export const TotalsScreen: React.FC = () => {
         <View style={currentStyles.header}>
           <Text style={currentStyles.headerTitle}>Money Totals</Text>
           <View style={currentStyles.headerActions}>
-            <DarkModeToggle />
             <TouchableOpacity
               onPress={openAddModal}
               style={currentStyles.addButton}
