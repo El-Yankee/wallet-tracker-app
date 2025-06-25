@@ -2,7 +2,7 @@
   "expo": {
     "name": "Wallet Tracker",
     "slug": "wallet-tracker",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/wallet.png",
     "userInterfaceStyle": "light",

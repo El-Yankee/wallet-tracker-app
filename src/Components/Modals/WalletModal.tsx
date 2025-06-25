@@ -108,6 +108,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({
             <Picker
               selectedValue={form.type}
               onValueChange={(value) => setForm({ ...form, type: value })}
+              dropdownIconColor={currentStyles.iconColor.color}
               style={currentStyles.picker}
             >
               {WALLET_TYPES.map((type) => (

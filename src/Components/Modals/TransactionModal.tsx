@@ -1,5 +1,5 @@
-"use client";
-
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { Platform } from "react-native";
 import type React from "react";
 import { useState, useEffect } from "react";
 import {
@@ -39,6 +39,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
     date: getCurrentDate(),
   });
   const currentStyles = isDarkMode ? darkStyles : styles;
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   useEffect(() => {
     if (editingTransaction) {
@@ -106,6 +107,16 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
     onClose();
   };
 
+  const handleDateChange = (event: any, selectedDate?: Date) => {
+    setShowDatePicker(false);
+    if (selectedDate) {
+      const year = selectedDate.getFullYear();
+      const month = String(selectedDate.getMonth() + 1).padStart(2, "0");
+      const day = String(selectedDate.getDate()).padStart(2, "0");
+      setForm({ ...form, date: `${year}-${month}-${day}` });
+    }
+  };
+
   return (
     <Modal visible={visible} animationType="slide" transparent>
       <View style={currentStyles.modalOverlay}>
@@ -136,6 +147,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
             <Picker
               selectedValue={form.type}
               onValueChange={(value) => setForm({ ...form, type: value })}
+              dropdownIconColor={currentStyles.iconColor.color}
               style={currentStyles.picker}
             >
               {TRANSACTION_TYPES.map((type) => (
@@ -153,6 +165,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
             <Picker
               selectedValue={form.walletId}
               onValueChange={(value) => setForm({ ...form, walletId: value })}
+              dropdownIconColor={currentStyles.iconColor.color}
               style={currentStyles.picker}
             >
               <Picker.Item label="Select wallet" value="" />
@@ -171,6 +184,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
             <Picker
               selectedValue={form.totalId}
               onValueChange={(value) => setForm({ ...form, totalId: value })}
+              dropdownIconColor={currentStyles.iconColor.color}
               style={currentStyles.picker}
             >
               <Picker.Item label="Select total" value="" />
@@ -184,13 +198,29 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
             </Picker>
           </View>
 
-          <TextInput
+          <Text style={currentStyles.inputLabel}>Date</Text>
+          <TouchableOpacity
             style={currentStyles.input}
-            placeholder="Date (YYYY-MM-DD)"
-            placeholderTextColor={currentStyles.placeholderColor.color}
-            value={form.date}
-            onChangeText={(text) => setForm({ ...form, date: text })}
-          />
+            onPress={() => setShowDatePicker(true)}
+          >
+            <Text
+              style={{
+                color: form.date
+                  ? currentStyles.input.color
+                  : currentStyles.placeholderColor.color,
+              }}
+            >
+              {form.date || "Select date"}
+            </Text>
+          </TouchableOpacity>
+          {showDatePicker && (
+            <DateTimePicker
+              value={form.date ? new Date(form.date) : new Date()}
+              mode="date"
+              display={Platform.OS === "ios" ? "spinner" : "default"}
+              onChange={handleDateChange}
+            />
+          )}
 
           <View style={currentStyles.modalActions}>
             <TouchableOpacity
