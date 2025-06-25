@@ -1,5 +1,3 @@
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { Platform } from "react-native";
 import type React from "react";
 import { useState, useEffect } from "react";
 import {
@@ -9,6 +7,8 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  BackHandler,
+  Platform,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useAppContext } from "../../Context/AppContext";
@@ -16,6 +16,7 @@ import type { Transaction, TransactionForm } from "../../Types";
 import { TRANSACTION_TYPES } from "../../Constants";
 import { getCurrentDate } from "../../Utils/helpers";
 import { styles, darkStyles } from "../../Styles/AppStyles";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 interface TransactionModalProps {
   visible: boolean;
@@ -117,8 +118,26 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
     }
   };
 
+  useEffect(() => {
+    if (!visible) return;
+    const onBackPress = () => {
+      onClose();
+      return true;
+    };
+    const subscription = BackHandler.addEventListener(
+      "hardwareBackPress",
+      onBackPress
+    );
+    return () => subscription.remove();
+  }, [visible, onClose]);
+
   return (
-    <Modal visible={visible} animationType="slide" transparent>
+    <Modal
+      visible={visible}
+      animationType="slide"
+      transparent
+      onRequestClose={onClose}
+    >
       <View style={currentStyles.modalOverlay}>
         <View style={currentStyles.modalContent}>
           <Text style={currentStyles.modalTitle}>
