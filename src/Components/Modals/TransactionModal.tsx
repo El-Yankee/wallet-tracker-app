@@ -9,6 +9,8 @@ import {
   Alert,
   BackHandler,
   Platform,
+  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useAppContext } from "../../Context/AppContext";
@@ -139,125 +141,141 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
       onRequestClose={onClose}
     >
       <View style={currentStyles.modalOverlay}>
-        <View style={currentStyles.modalContent}>
-          <Text style={currentStyles.modalTitle}>
-            {editingTransaction ? "Edit Transaction" : "Add New Transaction"}
-          </Text>
-
-          <TextInput
-            style={currentStyles.input}
-            placeholder="Description (e.g., Grocery Shopping)"
-            placeholderTextColor={currentStyles.placeholderColor.color}
-            value={form.description}
-            onChangeText={(text) => setForm({ ...form, description: text })}
-          />
-
-          <TextInput
-            style={currentStyles.input}
-            placeholder="Amount"
-            placeholderTextColor={currentStyles.placeholderColor.color}
-            value={form.amount}
-            onChangeText={(text) => setForm({ ...form, amount: text })}
-            keyboardType="numeric"
-          />
-
-          <Text style={currentStyles.inputLabel}>Type</Text>
-          <View style={currentStyles.pickerContainer}>
-            <Picker
-              selectedValue={form.type}
-              onValueChange={(value) => setForm({ ...form, type: value })}
-              dropdownIconColor={currentStyles.iconColor.color}
-              style={currentStyles.picker}
-            >
-              {TRANSACTION_TYPES.map((type) => (
-                <Picker.Item
-                  key={type.value}
-                  label={type.label}
-                  value={type.value}
-                />
-              ))}
-            </Picker>
-          </View>
-
-          <Text style={currentStyles.inputLabel}>Wallet</Text>
-          <View style={currentStyles.pickerContainer}>
-            <Picker
-              selectedValue={form.walletId}
-              onValueChange={(value) => setForm({ ...form, walletId: value })}
-              dropdownIconColor={currentStyles.iconColor.color}
-              style={currentStyles.picker}
-            >
-              <Picker.Item label="Select wallet" value="" />
-              {wallets.map((wallet) => (
-                <Picker.Item
-                  key={wallet.id}
-                  label={wallet.name}
-                  value={wallet.id.toString()}
-                />
-              ))}
-            </Picker>
-          </View>
-
-          <Text style={currentStyles.inputLabel}>Total (Owner)</Text>
-          <View style={currentStyles.pickerContainer}>
-            <Picker
-              selectedValue={form.totalId}
-              onValueChange={(value) => setForm({ ...form, totalId: value })}
-              dropdownIconColor={currentStyles.iconColor.color}
-              style={currentStyles.picker}
-            >
-              <Picker.Item label="Select total" value="" />
-              {totals.map((total) => (
-                <Picker.Item
-                  key={total.id}
-                  label={total.name}
-                  value={total.id.toString()}
-                />
-              ))}
-            </Picker>
-          </View>
-
-          <Text style={currentStyles.inputLabel}>Date</Text>
-          <TouchableOpacity
-            style={currentStyles.input}
-            onPress={() => setShowDatePicker(true)}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ flex: 1, width: "100%" }}
+        >
+          <ScrollView
+            contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+            keyboardShouldPersistTaps="handled"
           >
-            <Text
-              style={{
-                color: form.date
-                  ? currentStyles.input.color
-                  : currentStyles.placeholderColor.color,
-              }}
-            >
-              {form.date || "Select date"}
-            </Text>
-          </TouchableOpacity>
-          {showDatePicker && (
-            <DateTimePicker
-              value={form.date ? new Date(form.date) : new Date()}
-              mode="date"
-              display={Platform.OS === "ios" ? "spinner" : "default"}
-              onChange={handleDateChange}
-            />
-          )}
-
-          <View style={currentStyles.modalActions}>
-            <TouchableOpacity
-              style={currentStyles.cancelButton}
-              onPress={onClose}
-            >
-              <Text style={currentStyles.cancelButtonText}>Cancel</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={currentStyles.saveButton}
-              onPress={handleSave}
-            >
-              <Text style={currentStyles.saveButtonText}>
-                {editingTransaction ? "Update" : "Add"} Transaction
+            <View style={currentStyles.modalContent}>
+              <Text style={currentStyles.modalTitle}>
+                {editingTransaction
+                  ? "Edit Transaction"
+                  : "Add New Transaction"}
               </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+
+              <TextInput
+                style={currentStyles.input}
+                placeholder="Description (e.g., Grocery Shopping)"
+                placeholderTextColor={currentStyles.placeholderColor.color}
+                value={form.description}
+                onChangeText={(text) => setForm({ ...form, description: text })}
+              />
+
+              <TextInput
+                style={currentStyles.input}
+                placeholder="Amount"
+                placeholderTextColor={currentStyles.placeholderColor.color}
+                value={form.amount}
+                onChangeText={(text) => setForm({ ...form, amount: text })}
+                keyboardType="numeric"
+              />
+
+              <Text style={currentStyles.inputLabel}>Type</Text>
+              <View style={currentStyles.pickerContainer}>
+                <Picker
+                  selectedValue={form.type}
+                  onValueChange={(value) => setForm({ ...form, type: value })}
+                  dropdownIconColor={currentStyles.iconColor.color}
+                  style={currentStyles.picker}
+                >
+                  {TRANSACTION_TYPES.map((type) => (
+                    <Picker.Item
+                      key={type.value}
+                      label={type.label}
+                      value={type.value}
+                    />
+                  ))}
+                </Picker>
+              </View>
+
+              <Text style={currentStyles.inputLabel}>Wallet</Text>
+              <View style={currentStyles.pickerContainer}>
+                <Picker
+                  selectedValue={form.walletId}
+                  onValueChange={(value) =>
+                    setForm({ ...form, walletId: value })
+                  }
+                  dropdownIconColor={currentStyles.iconColor.color}
+                  style={currentStyles.picker}
+                >
+                  <Picker.Item label="Select wallet" value="" />
+                  {wallets.map((wallet) => (
+                    <Picker.Item
+                      key={wallet.id}
+                      label={wallet.name}
+                      value={wallet.id.toString()}
+                    />
+                  ))}
+                </Picker>
+              </View>
+
+              <Text style={currentStyles.inputLabel}>Total (Owner)</Text>
+              <View style={currentStyles.pickerContainer}>
+                <Picker
+                  selectedValue={form.totalId}
+                  onValueChange={(value) =>
+                    setForm({ ...form, totalId: value })
+                  }
+                  dropdownIconColor={currentStyles.iconColor.color}
+                  style={currentStyles.picker}
+                >
+                  <Picker.Item label="Select total" value="" />
+                  {totals.map((total) => (
+                    <Picker.Item
+                      key={total.id}
+                      label={total.name}
+                      value={total.id.toString()}
+                    />
+                  ))}
+                </Picker>
+              </View>
+
+              <Text style={currentStyles.inputLabel}>Date</Text>
+              <TouchableOpacity
+                style={currentStyles.input}
+                onPress={() => setShowDatePicker(true)}
+              >
+                <Text
+                  style={{
+                    color: form.date
+                      ? currentStyles.input.color
+                      : currentStyles.placeholderColor.color,
+                  }}
+                >
+                  {form.date || "Select date"}
+                </Text>
+              </TouchableOpacity>
+              {showDatePicker && (
+                <DateTimePicker
+                  value={form.date ? new Date(form.date) : new Date()}
+                  mode="date"
+                  display={Platform.OS === "ios" ? "spinner" : "default"}
+                  onChange={handleDateChange}
+                />
+              )}
+
+              <View style={currentStyles.modalActions}>
+                <TouchableOpacity
+                  style={currentStyles.cancelButton}
+                  onPress={onClose}
+                >
+                  <Text style={currentStyles.cancelButtonText}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={currentStyles.saveButton}
+                  onPress={handleSave}
+                >
+                  <Text style={currentStyles.saveButtonText}>
+                    {editingTransaction ? "Update" : "Add"} Transaction
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </View>
     </Modal>
   );
