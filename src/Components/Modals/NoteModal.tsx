@@ -1,5 +1,3 @@
-"use client";
-
 import type React from "react";
 import { useState, useEffect } from "react";
 import {
@@ -9,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  BackHandler,
 } from "react-native";
 import { useAppContext } from "../../Context/AppContext";
 import type { Note, NoteForm } from "../../Types";
@@ -65,8 +64,26 @@ export const NoteModal: React.FC<NoteModalProps> = ({
     onClose();
   };
 
+  useEffect(() => {
+    if (!visible) return;
+    const onBackPress = () => {
+      onClose();
+      return true;
+    };
+    const subscription = BackHandler.addEventListener(
+      "hardwareBackPress",
+      onBackPress
+    );
+    return () => subscription.remove();
+  }, [visible, onClose]);
+
   return (
-    <Modal visible={visible} animationType="slide" transparent>
+    <Modal
+      visible={visible}
+      animationType="slide"
+      transparent
+      onRequestClose={onClose}
+    >
       <View style={currentStyles.modalOverlay}>
         <View style={currentStyles.modalContent}>
           <Text style={currentStyles.modalTitle}>

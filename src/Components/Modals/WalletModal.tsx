@@ -1,5 +1,3 @@
-"use client";
-
 import type React from "react";
 import { useState, useEffect } from "react";
 import {
@@ -9,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  BackHandler,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useAppContext } from "../../Context/AppContext";
@@ -78,8 +77,26 @@ export const WalletModal: React.FC<WalletModalProps> = ({
     onClose();
   };
 
+  useEffect(() => {
+    if (!visible) return;
+    const onBackPress = () => {
+      onClose();
+      return true;
+    };
+    const subscription = BackHandler.addEventListener(
+      "hardwareBackPress",
+      onBackPress
+    );
+    return () => subscription.remove();
+  }, [visible, onClose]);
+
   return (
-    <Modal visible={visible} animationType="slide" transparent>
+    <Modal
+      visible={visible}
+      animationType="slide"
+      transparent
+      onRequestClose={onClose}
+    >
       <View style={currentStyles.modalOverlay}>
         <View style={currentStyles.modalContent}>
           <Text style={currentStyles.modalTitle}>
@@ -108,6 +125,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({
             <Picker
               selectedValue={form.type}
               onValueChange={(value) => setForm({ ...form, type: value })}
+              dropdownIconColor={currentStyles.iconColor.color}
               style={currentStyles.picker}
             >
               {WALLET_TYPES.map((type) => (
