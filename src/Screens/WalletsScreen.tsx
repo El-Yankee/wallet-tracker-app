@@ -1,8 +1,5 @@
-"use client";
-
-import type React from "react";
-import { useState } from "react";
-import { ScrollView, View, Text, TouchableOpacity, Alert } from "react-native";
+import React, { useState, useMemo } from "react";
+import { View, Text, TouchableOpacity, Alert, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppContext } from "../Context/AppContext";
 import { WalletModal } from "../Components/Modals/WalletModal";
@@ -29,6 +26,7 @@ export const WalletsScreen: React.FC = () => {
   const { wallets, setWallets, isDarkMode } = useAppContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingWallet, setEditingWallet] = useState<Wallet | null>(null);
+  const [sortBy, setSortBy] = useState<"name" | "amount">("name");
   const currentStyles = isDarkMode ? darkStyles : styles;
 
   const openAddModal = () => {
@@ -58,20 +56,50 @@ export const WalletsScreen: React.FC = () => {
     );
   };
 
+  // Ordenar wallets según el criterio seleccionado
+  const sortedWallets = useMemo(() => {
+    return [...wallets].sort((a, b) => {
+      if (sortBy === "name") {
+        return a.name.localeCompare(b.name);
+      }
+      if (sortBy === "amount") {
+        return b.amount - a.amount;
+      }
+      return 0;
+    });
+  }, [wallets, sortBy]);
+
   return (
     <View style={currentStyles.content}>
       <ScrollView style={currentStyles.container}>
         <View style={currentStyles.header}>
           <Text style={currentStyles.headerTitle}>My Wallets</Text>
-          <TouchableOpacity
-            onPress={openAddModal}
-            style={currentStyles.addButton}
-          >
-            <Ionicons name="add" size={24} color="#fff" />
-          </TouchableOpacity>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <TouchableOpacity
+              onPress={() => setSortBy(sortBy === "name" ? "amount" : "name")}
+              style={{
+                marginRight: 8,
+                backgroundColor: "#e5e7eb",
+                borderRadius: 20,
+                padding: 6,
+              }}
+            >
+              <Ionicons
+                name={sortBy === "name" ? "text-outline" : "cash-outline"}
+                size={20}
+                color={currentStyles.iconColor.color}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={openAddModal}
+              style={currentStyles.addButton}
+            >
+              <Ionicons name="add" size={24} color="#fff" />
+            </TouchableOpacity>
+          </View>
         </View>
 
-        {wallets.map((wallet) => (
+        {sortedWallets.map((wallet) => (
           <View key={wallet.id} style={currentStyles.card}>
             <View style={currentStyles.cardContent}>
               <View style={currentStyles.cardLeft}>
